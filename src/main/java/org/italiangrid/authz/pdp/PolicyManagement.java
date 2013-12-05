@@ -1,10 +1,10 @@
 package org.italiangrid.authz.pdp;
 
-import java.util.Set;
+import java.util.List;
 
 
 public interface PolicyManagement {
-	public Set<Policy> getPolicies();
+	public List<Policy> getPolicies();
 	public boolean addPolicy(Policy p);
 	public void clearPolicies();
 }

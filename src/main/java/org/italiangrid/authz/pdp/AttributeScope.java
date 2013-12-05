@@ -1,14 +1,14 @@
 package org.italiangrid.authz.pdp;
 
 
-public enum AttributeContextID implements Identifiable{
+public enum AttributeScope implements Identifiable{
 	
 	PRINCIPAL("principal"),
 	ENVIRONMENT("environment"),
 	RESOURCE("resource"),
 	ACTION("action");
 	
-	private AttributeContextID(String id){
+	private AttributeScope(String id){
 		this.id = id;
 	}
 

@@ -1,39 +1,37 @@
 package org.italiangrid.authz.pdp.impl;
 
-import java.util.List;
-
 import org.italiangrid.authz.pdp.Attribute;
-import org.italiangrid.authz.pdp.AttributeContext;
-import org.italiangrid.authz.pdp.AttributeID;
-import org.italiangrid.authz.pdp.MatchRule;
+import org.italiangrid.authz.pdp.AttributeBag;
+import org.italiangrid.authz.pdp.AttributeType;
+import org.italiangrid.authz.pdp.Request;
 
+public class StringEqualsAttributeMatchRule extends AttributeMatchingRule{
 
-
-public class StringEqualsAttributeMatchRule<T extends AttributeContext> 
-	implements MatchRule<T> {
-
-	AttributeID attributeId;
 	String value;
 	
-	public StringEqualsAttributeMatchRule(AttributeID attrId, String val) {
-		attributeId = attrId;
+	public StringEqualsAttributeMatchRule(AttributeType at, String val) {
+		super(at);
 		value = val;
 	}
 	
-	@Override
-	public boolean matches(T other) {
-		List<Attribute> attrList  = other.getAttributesById(attributeId);
+	public boolean matches(Request r){
+		AttributeBag attrBag = r.getAttributes(getAttributeType().getAttributeScope());
 		
-		for (Attribute a: attrList){
+		// TODO: should we warn about this?
+		if (attrBag == null)
+			return false;
+		
+		for (Attribute a: attrBag.getAttributesByID(getAttributeType().getID())){
 			if (a.getValue().equals(value))
 				return true;
 		}
+		
 		return false;
 	}
-	
+
 	@Override
 	public String toString() {
-		return String.format("'%s' == %s", attributeId, value);
+		return String.format("'%s' == %s", getAttributeType(), value);
 	}
 
 }

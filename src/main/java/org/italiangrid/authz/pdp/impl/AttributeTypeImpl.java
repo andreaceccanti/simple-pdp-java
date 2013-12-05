@@ -1,22 +1,16 @@
 package org.italiangrid.authz.pdp.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import org.italiangrid.authz.pdp.AttributeScope;
+import org.italiangrid.authz.pdp.AttributeType;
 
-import org.italiangrid.authz.pdp.Policy;
-import org.italiangrid.authz.pdp.Rule;
+public class AttributeTypeImpl implements AttributeType {
 
-
-
-public class PolicyImpl implements Policy {
-
-	private String id;
-	private List<Rule> rules;
+	String id;
+	AttributeScope scope;
 	
-	public PolicyImpl(){
-		id = UUID.randomUUID().toString();
-		rules  = new ArrayList<Rule>();
+	public AttributeTypeImpl(String i, AttributeScope s) {
+		id = i;
+		scope = s;
 	}
 
 	@Override
@@ -25,13 +19,14 @@ public class PolicyImpl implements Policy {
 	}
 
 	@Override
-	public List<Rule> getRules() {
-		return rules;
+	public AttributeScope getAttributeScope() {
+		return scope;
 	}
-
+	
+	
 	@Override
 	public String toString() {
-		return String.format("Policy [%s]: %s", id, rules);
+		return String.format("%s:%s", scope, id);
 	}
 
 	@Override
@@ -39,6 +34,7 @@ public class PolicyImpl implements Policy {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((scope == null) ? 0 : scope.hashCode());
 		return result;
 	}
 
@@ -50,13 +46,14 @@ public class PolicyImpl implements Policy {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PolicyImpl other = (PolicyImpl) obj;
+		AttributeTypeImpl other = (AttributeTypeImpl) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (scope != other.scope)
+			return false;
 		return true;
 	}
-
 }

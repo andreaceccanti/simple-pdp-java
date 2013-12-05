@@ -1,23 +1,22 @@
 package org.italiangrid.authz.pdp.impl;
 
 import org.italiangrid.authz.pdp.Attribute;
-import org.italiangrid.authz.pdp.AttributeID;
+import org.italiangrid.authz.pdp.AttributeType;
 
 
-public class AttributeImpl implements Attribute, 
-	Comparable<AttributeImpl> {
+public class AttributeImpl implements Attribute{
 
-	AttributeID id;
+	AttributeType type;
 	String value;
 	
-	public AttributeImpl(AttributeID id, String value){
-		this.id = id;
+	public AttributeImpl(AttributeType type, String value){
+		this.type = type;
 		this.value = value;
 	}
 
 	@Override
-	public AttributeID getID() {
-		return id;
+	public String getID() {
+		return type.getID();
 	}
 	
 	@Override
@@ -25,24 +24,29 @@ public class AttributeImpl implements Attribute,
 		return value;
 	}
 	
+	
 	@Override
-	public int compareTo(AttributeImpl o) {
-		return id.compareTo(o.id);
+	public String toString() {
+		return	String.format("%s = %s", type, value);
+	}
+	
+
+	@Override
+	public AttributeType getAttributeType() {
+		return type;
 	}
 
 	@Override
 	public int hashCode() {
-
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -50,10 +54,10 @@ public class AttributeImpl implements Attribute,
 		if (getClass() != obj.getClass())
 			return false;
 		AttributeImpl other = (AttributeImpl) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (type == null) {
+			if (other.type != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!type.equals(other.type))
 			return false;
 		if (value == null) {
 			if (other.value != null)
@@ -61,10 +65,5 @@ public class AttributeImpl implements Attribute,
 		} else if (!value.equals(other.value))
 			return false;
 		return true;
-	}
-	
-	@Override
-	public String toString() {
-		return	String.format("%s = %s", id, value);
 	}
 }

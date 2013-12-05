@@ -2,7 +2,7 @@ package org.italiangrid.authz.pdp;
 
 
 
-public interface Attribute {
-	AttributeID getID();
+public interface Attribute extends Identifiable{
+	AttributeType getAttributeType();
 	String getValue();
 }

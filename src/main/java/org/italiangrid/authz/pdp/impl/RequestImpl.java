@@ -1,67 +1,48 @@
 package org.italiangrid.authz.pdp.impl;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
-import org.italiangrid.authz.pdp.Action;
-import org.italiangrid.authz.pdp.Environment;
-import org.italiangrid.authz.pdp.Principal;
+import org.italiangrid.authz.pdp.Attribute;
+import org.italiangrid.authz.pdp.AttributeBag;
+import org.italiangrid.authz.pdp.AttributeScope;
 import org.italiangrid.authz.pdp.Request;
-import org.italiangrid.authz.pdp.Resource;
 
 
 
 public class RequestImpl extends BaseIdentifiable implements Request {
 
-	Principal principal;
-	Resource resource;
-	Action action;
-	Environment environment;
+	Map<AttributeScope, AttributeBag> attributeBags;
 	
 	public RequestImpl() {
 		super(UUID.randomUUID().toString());
-	}
-	@Override
-	public Principal getPrincipal() {
-		return principal;
-	}
 
-	@Override
-	public Environment getEnvironment() {
-		return environment;
-	}
+		attributeBags = new HashMap<AttributeScope, AttributeBag>();
 
-	@Override
-	public Resource getResource() {
-		return resource;
-	}
-
-	@Override
-	public Action getAction() {
-		return action;
-	}
-
-	public void setPrincipal(Principal principal) {
-		this.principal = principal;
-	}
-	
-	public void setResource(Resource resource) {
-		this.resource = resource;
-	}
-
-	public void setAction(Action action) {
-		this.action = action;
-	}
-
-	public void setEnvironment(Environment environment) {
-		this.environment = environment;
+		attributeBags.put(AttributeScope.PRINCIPAL, new AttributeBagImpl(AttributeScope.PRINCIPAL));
+		attributeBags.put(AttributeScope.RESOURCE, new AttributeBagImpl(AttributeScope.RESOURCE));
+		attributeBags.put(AttributeScope.ACTION, new AttributeBagImpl(AttributeScope.ACTION));
+		attributeBags.put(AttributeScope.ENVIRONMENT, new AttributeBagImpl(AttributeScope.ENVIRONMENT));
+		
 	}
 	
 	@Override
 	public String toString() {
 		return String.format("Request [%s] { %s, %s, %s }",
 			id,
-			principal,
-			action,
-			resource);
+			getAttributes(AttributeScope.PRINCIPAL),
+			getAttributes(AttributeScope.RESOURCE),
+			getAttributes(AttributeScope.ACTION),
+			getAttributes(AttributeScope.ENVIRONMENT));
+	}
+
+	@Override
+	public AttributeBag getAttributes(AttributeScope scope) {
+		return attributeBags.get(scope);
+	}
+	
+	public boolean addAttribute(Attribute a){
+		return attributeBags.get(a.getAttributeType().getAttributeScope()).addAttribute(a);
 	}
 }
